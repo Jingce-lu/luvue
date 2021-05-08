@@ -6,6 +6,7 @@
 
 rollup 简易实现简易 tree-shking 并打包
 
+[gitHub 仓库地址](https://github.com/Jingce-lu/rollup-demo)
 
 ## 前置知识
 

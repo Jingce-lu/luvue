@@ -36,7 +36,7 @@ npm install es-module-lexer koa koa-static magic-string
 ### 2.基本结构搭建
 
 ```js
-const Koa = require("koa");
+const Koa = require('koa');
 function createServer() {
   const app = new Koa();
   const root = process.cwd();

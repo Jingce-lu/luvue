@@ -43,7 +43,7 @@ function createServer() {
   // 构建上下文对象
   const context = {
     app,
-    root
+    root,
   };
   app.use((ctx, next) => {
     // 扩展ctx属性
@@ -61,17 +61,17 @@ createServer().listen(4000);
 ### 3.静态服务配置
 
 ```js
-const { serveStaticPlugin } = require("./serverPluginServeStatic");
+const { serveStaticPlugin } = require('./serverPluginServeStatic');
 const resolvedPlugins = [serveStaticPlugin];
 ```
 
 ```js
-const path = require("path");
+const path = require('path');
 function serveStaticPlugin({ app, root }) {
   // 以当前根目录作为静态目录
-  app.use(require("koa-static")(root));
+  app.use(require('koa-static')(root));
   // 以public目录作为根目录
-  app.use(require("koa-static")(path.join(root, "public")));
+  app.use(require('koa-static')(path.join(root, 'public')));
 }
 exports.serveStaticPlugin = serveStaticPlugin;
 ```

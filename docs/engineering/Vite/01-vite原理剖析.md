@@ -81,14 +81,13 @@ exports.serveStaticPlugin = serveStaticPlugin;
 ### 4.重写模块路径
 
 ```js
-const { moduleRewritePlugin } = require("./serverPluginModuleRewrite");
 const resolvedPlugins = [moduleRewritePlugin, serveStaticPlugin];
 ```
 
 ```js
-const { readBody } = require("./utils");
-const { parse } = require("es-module-lexer");
-const MagicString = require("magic-string");
+const { readBody } = require('./utils');
+const { parse } = require('es-module-lexer');
+const MagicString = require('magic-string');
 function rewriteImports(source) {
   let imports = parse(source)[0];
   const magicString = new MagicString(source);

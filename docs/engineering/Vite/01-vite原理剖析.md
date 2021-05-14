@@ -81,6 +81,7 @@ exports.serveStaticPlugin = serveStaticPlugin;
 ### 4.重写模块路径
 
 ```js
+const { moduleRewritePlugin } = require('./serverPluginModuleRewrite');
 const resolvedPlugins = [moduleRewritePlugin, serveStaticPlugin];
 ```
 
@@ -108,7 +109,7 @@ function moduleRewritePlugin({ app, root }) {
   app.use(async (ctx, next) => {
     await next();
     // 对类型是js的文件进行拦截
-    if (ctx.body && ctx.response.is("js")) {
+    if (ctx.body && ctx.response.is('js')) {
       // 读取文件中的内容
       const content = await readBody(ctx.body);
       // 重写import中无法识别的路径
@@ -125,13 +126,13 @@ exports.moduleRewritePlugin = moduleRewritePlugin;
 **读取文件内容**
 
 ```js
-const { Readable } = require("stream");
+const { Readable } = require('stream');
 async function readBody(stream) {
   if (stream instanceof Readable) {
     //
     return new Promise((resolve, reject) => {
-      let res = "";
-      stream.on("data", chunk => (res += chunk)).on("end", () => resolve(res));
+      let res = '';
+      stream.on('data', chunk => (res += chunk)).on('end', () => resolve(res));
     });
   } else {
     return stream.toString();

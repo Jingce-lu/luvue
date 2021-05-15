@@ -1,0 +1,31 @@
+{
+  "name": "luvue-study-notes",
+  "version": "1.0.0",
+  "description": "世路如今已惯,此心到处悠然",
+  "main": "index.js",
+  "scripts": {
+    "start1": "vuepress dev docs --no-cache",
+    "start": "vuepress dev docs",
+    "build": "vuepress build docs",
+    "publish": "npm run build && gh-pages -d dist",
+    "deploy": "bash deploy.sh",
+    "deploy:win": "sh deploy.sh",
+    "deploy:gh-pages": "gh-pages -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jingce-lu/luvue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jingce-lu/luvue/issues"
+  },
+  "homepage": "https://github.com/Jingce-lu/luvue#readme",
+  "dependencies": {
+    "@vuepress/plugin-back-to-top": "^1.2.0",
+    "gh-pages": "^2.1.1",
+    "vuepress": "^1.2.0"
+  }
+}

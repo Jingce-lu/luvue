@@ -1,0 +1,36 @@
+# This is a basic workflow to deploy gh-pages
+
+name: GitHub Pages deploy
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches:
+      - release
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: GitHub Checkout
+        uses: actions/checkout@v2
+
+      # install dependency packages
+      - name: install
+        run: npm install
+
+        # build
+      - name: build
+        run: npm run build
+
+      # deploy to gh-pages
+      - name: Build & Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

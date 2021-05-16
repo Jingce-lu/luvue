@@ -166,9 +166,9 @@ function moduleResolvePlugin({ app, root }) {
       return next();
     }
     // 去掉 /@modules/路径
-    const id = ctx.path.replace(moduleRE, "");
-    ctx.type = "js";
-    const content = await fs.readFile(vueResolved[id], "utf8");
+    const id = ctx.path.replace(moduleRE, '');
+    ctx.type = 'js';
+    const content = await fs.readFile(vueResolved[id], 'utf8');
     ctx.body = content;
   });
 }

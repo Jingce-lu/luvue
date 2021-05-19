@@ -180,8 +180,7 @@ for (name in on) {
 }
 ```
 
-> 源码位置: src/compiler/codegen/events.js:42
-
+> 源码位置: src/compiler/codegen/events.js:42  
 > 源码位置: src/core/vdom/helpers/update-listeners.js:65
 
 ## 8.Vue.directive 源码实现? #核心答案:
@@ -540,8 +539,8 @@ export function registerRef(vnode: VNodeWithData, isRemoval: ?boolean) {
 
 ## 15.谈谈 Vue3 和 Vue2 的区别?
 
-- 对 TypeScript 支持不友好（所有属性都放在了 this 对象上，难以推倒组件的数据类型）
-- 大量的 API 挂载在 Vue 对象的原型上，难以实现 TreeShaking。
+- 对 `TypeScript` 支持不友好（所有属性都放在了 this 对象上，难以推倒组件的数据类型）
+- 大量的 `API` 挂载在 Vue 对象的原型上，难以实现 `TreeShaking`。
 - 架构层面对跨平台 dom 渲染开发支持不友好
-- CompositionAPI。受 ReactHook 启发
+- `CompositionAPI`。受 `ReactHook` 启发
 - 对虚拟 DOM 进行了重写、对模板的编译进行了优化操作...

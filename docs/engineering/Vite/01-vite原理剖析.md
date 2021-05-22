@@ -178,40 +178,29 @@ exports.moduleResolvePlugin = moduleResolvePlugin;
 > 将/@modules 开头的路径解析成对应的真实文件，返回给浏览器
 
 ```js
-const path = require("path");
+const path = require('path');
 function resolveVue(root) {
-  const compilerPkgPath = path.resolve(
-    root,
-    "node_modules",
-    "@vue/compiler-sfc/package.json"
-  );
+  const compilerPkgPath = path.resolve(root, 'node_modules', '@vue/compiler-sfc/package.json');
   const compilerPkg = require(compilerPkgPath);
   // 编译模块的路径  node中编译
-  const compilerPath = path.join(
-    path.dirname(compilerPkgPath),
-    compilerPkg.main
-  );
+  const compilerPath = path.join(path.dirname(compilerPkgPath), compilerPkg.main);
   const resolvePath = name =>
-    path.resolve(
-      root,
-      "node_modules",
-      `@vue/${name}/dist/${name}.esm-bundler.js`
-    );
+    path.resolve(root, 'node_modules', `@vue/${name}/dist/${name}.esm-bundler.js`);
   // dom运行
-  const runtimeDomPath = resolvePath("runtime-dom");
+  const runtimeDomPath = resolvePath('runtime-dom');
   // 核心运行
-  const runtimeCorePath = resolvePath("runtime-core");
+  const runtimeCorePath = resolvePath('runtime-core');
   // 响应式模块
-  const reactivityPath = resolvePath("reactivity");
+  const reactivityPath = resolvePath('reactivity');
   // 共享模块
-  const sharedPath = resolvePath("shared");
+  const sharedPath = resolvePath('shared');
   return {
     vue: runtimeDomPath,
-    "@vue/runtime-dom": runtimeDomPath,
-    "@vue/runtime-core": runtimeCorePath,
-    "@vue/reactivity": reactivityPath,
-    "@vue/shared": sharedPath,
-    compiler: compilerPath
+    '@vue/runtime-dom': runtimeDomPath,
+    '@vue/runtime-core': runtimeCorePath,
+    '@vue/reactivity': reactivityPath,
+    '@vue/shared': sharedPath,
+    compiler: compilerPath,
   };
 }
 ```

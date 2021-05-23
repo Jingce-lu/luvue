@@ -222,7 +222,7 @@ const resolvedPlugins = [
 ```
 
 ```js
-const { readBody } = require("./utils");
+const { readBody } = require('./utils');
 function htmlRewritePlugin({ root, app }) {
   const devInjection = `
     <script>
@@ -231,7 +231,7 @@ function htmlRewritePlugin({ root, app }) {
     `;
   app.use(async (ctx, next) => {
     await next();
-    if (ctx.response.is("html")) {
+    if (ctx.response.is('html')) {
       const html = await readBody(ctx.body);
       ctx.body = html.replace(/<head>/, `$&${devInjection}`);
     }
@@ -245,13 +245,13 @@ exports.htmlRewritePlugin = htmlRewritePlugin;
 ### 7.处理`.vue`后缀文件
 
 ```js
-const { vuePlugin } = require("./serverPluginVue");
+const { vuePlugin } = require('./serverPluginVue');
 const resolvedPlugins = [
   htmlRewritePlugin,
   moduleRewritePlugin,
   moduleResolvePlugin,
   vuePlugin,
-  serveStaticPlugin
+  serveStaticPlugin,
 ];
 ```
 

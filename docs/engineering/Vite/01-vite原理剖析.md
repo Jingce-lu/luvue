@@ -144,20 +144,16 @@ exports.readBody = readBody;
 ### 5.解析 `/@modules` 文件
 
 ```js
-const { moduleResolvePlugin } = require("./serverPluginModuleResolve");
-const resolvedPlugins = [
-  moduleRewritePlugin,
-  moduleResolvePlugin,
-  serveStaticPlugin
-];
+const { moduleResolvePlugin } = require('./serverPluginModuleResolve');
+const resolvedPlugins = [moduleRewritePlugin, moduleResolvePlugin, serveStaticPlugin];
 ```
 
 ```js
-const fs = require("fs").promises;
-const path = require("path");
-const { resolve } = require("path");
+const fs = require('fs').promises;
+const path = require('path');
+const { resolve } = require('path');
 const moduleRE = /^\/@modules\//;
-const { resolveVue } = require("./utils");
+const { resolveVue } = require('./utils');
 function moduleResolvePlugin({ app, root }) {
   const vueResolved = resolveVue(root);
   app.use(async (ctx, next) => {
@@ -212,7 +208,7 @@ function resolveVue(root) {
 浏览器中并没有 process 变量，所以我们需要在 `html` 中注入 process 变量
 
 ```js
-const { htmlRewritePlugin } = require("./serverPluginHtml");
+const { htmlRewritePlugin } = require('./serverPluginHtml');
 const resolvedPlugins = [
   htmlRewritePlugin,
   moduleRewritePlugin,

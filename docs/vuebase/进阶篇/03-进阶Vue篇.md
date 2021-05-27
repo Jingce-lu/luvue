@@ -191,6 +191,7 @@ ListItem.vue 调用最外层的 render 方法，将 createElement 和当前项�
 ### 1.案例:实现无限极菜单组件
 
 1. 使用模板来实现
+
    ```html
    <el-menu>
      <template v-for="d in data">
@@ -199,15 +200,15 @@ ListItem.vue 调用最外层的 render 方法，将 createElement 和当前项�
    </el-menu>
    ```
 
-
-    <el-submenu :key="data.id" v-if="data.children">
-        <template slot="title">{{data.title}}</template>
-        <template v-for="d in data.children">
-            <resub :key="d.id" :data="d"></resub>
-        </template>
-      </el-submenu>
-    <el-menu-item :key="data.id" v-else>{{data.title}}</el-menu-item>
-    ```
+   ```html
+   <el-submenu :key="data.id" v-if="data.children">
+     <template slot="title">{{data.title}}</template>
+     <template v-for="d in data.children">
+       <resub :key="d.id" :data="d"></resub>
+     </template>
+   </el-submenu>
+   <el-menu-item :key="data.id" v-else>{{data.title}}</el-menu-item>
+   ```
 
 2. 使用 render 函数来实现
    ```js

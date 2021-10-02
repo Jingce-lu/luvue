@@ -71,7 +71,7 @@ watcher(() => {
 ```html
 <script src="./node_modules/vue-template-compiler/browser.js"></script>
 <script>
-  let { ast, render } = VueTemplateCompiler.compile("<div>hello world</div>");
+  let { ast, render } = VueTemplateCompiler.compile('<div>hello world</div>');
   console.log(ast, render);
   const fn = new Function(render);
   console.log(fn.toString());
@@ -111,12 +111,12 @@ function callHook(vm, key) {
 function Vue(options) {
   this.options = mergeOptions(this.constructor.options, options);
 
-  callHook(this, "beforeCreate");
+  callHook(this, 'beforeCreate');
 }
 Vue.options = {};
 new Vue({
   beforeCreate() {
-    console.log("before create");
+    console.log('before create');
   },
 });
 ```
@@ -135,7 +135,7 @@ Vue.mixin = function (obj) {
 };
 Vue.mixin({
   beforeCreate() {
-    console.log("before create ok");
+    console.log('before create ok');
   },
 });
 ```
@@ -164,23 +164,26 @@ function nextTick(fn) {
   }
 }
 function render() {
-  console.log("rerender");
+  console.log('rerender');
 }
 nextTick(render);
 nextTick(render);
 nextTick(render);
-console.log("sync...");
+console.log('sync...');
 ```
 
 > 源码位置:src/core/global-api/mixin:5、src/core/util/next-tick.js:87
 
 ## 7.Vue 为什么需要虚拟 DOM？
 
-Virtual DOM 就是用 js 对象来描述真实 DOM，是对真实 DOM 的抽象，由于直接操作 DOM 性能低但是 js 层的操作效率高，可以将 DOM 操作转化成对象操作，最终通过 diff 算法比对差异进行更新 DOM（减少了对真实 DOM 的操作）。虚拟 DOM 不依赖真实平台环境从而也可以实现跨平台。
+- Virtual DOM 就是用 js 对象来描述真实 DOM，是对真实 DOM 的抽象，
+- 由于直接操作 DOM 性能低但是 js 层的操作效率高，可以将 DOM 操作转化成对象操作，最终通过 diff 算法比对差异进行更新 DOM（减少了对真实 DOM 的操作）。
+- 虚拟 DOM 不依赖真实平台环境从而也可以实现跨平台。
 
 虚拟 DOM 的实现就是普通对象包含 tag、data、children 等属性对真实节点的描述。（本质上就是在 JS 和 DOM 之间的一个缓存）
 
-> 源码位置:src/core/vdom/vnode:3
+> 源码位置:src/core/vdom/vnode:3 虚拟节点的实现
+> scr/core/vdom/create-element.js:28
 
 ## 8.Vue 中的 diff 原理
 
@@ -206,7 +209,7 @@ Vue 的 diff 算法是平级比较，不考虑跨级比较的情况。内部采�
 export function set(target: Array | Object, key: any, val: any): any {
   // 1.是开发环境 target 没定义或者是基础类型则报错
   if (
-    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
     warn(
@@ -227,10 +230,10 @@ export function set(target: Array | Object, key: any, val: any): any {
   const ob = (target: any).__ob__;
   // 4.如果是Vue实例 或 根数据data时 报错
   if (target._isVue || (ob && ob.vmCount)) {
-    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== 'production' &&
       warn(
-        "Avoid adding reactive properties to a Vue instance or its root $data " +
-          "at runtime - declare it upfront in the data option."
+        'Avoid adding reactive properties to a Vue instance or its root $data ' +
+          'at runtime - declare it upfront in the data option.'
       );
     return val;
   }
@@ -291,9 +294,16 @@ export function set(target: Array | Object, key: any, val: any): any {
 1. 父子组件渲染的先后顺序
 2. 组件是如何渲染到页面上的
 
-① 在渲染父组件时会创建父组件的虚拟节点,其中可能包含子组件的标签 ② 在创建虚拟节点时,获取组件的定义使用 Vue.extend 生成组件的构造函数。 ③ 将虚拟节点转化成真实节点时，会创建组件的实例并且调用组件的\$mount 方法。 ④ 所以组件的创建过程是先父后子
+- ① 在渲染父组件时会创建父组件的虚拟节点,其中可能包含子组件的标签
+- ② 在创建虚拟节点时,获取组件的定义使用 Vue.extend 生成组件的构造函数。
+- ③ 将虚拟节点转化成真实节点时，会创建组件的实例并且调用组件的\$mount 方法。
+- ④ 所以组件的创建过程是先父后子
 
 > 源码位置:src/core/vdom/patch:125
+
+- 产生组件虚拟节点 -> 创建组件的真实节点 -> 插入到页面中
+
+<div align="center"><img :src="$withBase('/images/vuebase/init.png')" alt="vuebase/init.png"></div>
 
 ## 14.Vue 中组件的 data 为什么是一个函数?
 
@@ -328,7 +338,7 @@ function genIfConditions(
   altEmpty?: string
 ): string {
   if (!conditions.length) {
-    return altEmpty || "_e()";
+    return altEmpty || '_e()';
   }
   const condition = conditions.shift();
   if (condition.exp) {
@@ -367,3 +377,15 @@ function genIfConditions(
 ```
 
 - 源码位置:src/platforms/web/runtime/directives/show.js:155
+
+## 16. 既然 Vue 通过数据劫持可以精准探测数据变化，为什么还需要虚拟 DOM 进行 diff 检测差异
+
+- 响应式数据变化，Vue 确实可以在数据发生变化时,响应式系统可以立刻得知。但是如果给每个属性都添加 watcher 用于更新的话，会产生大量的 watcher 从而降低性能。
+- 而且粒度过细也会导致更新不精准的问题，所以 vue 采用了组件级的 watcher 配合 diff 来检测差异
+
+## 17. 谈一谈对 Vue 组件化的理解
+
+- 组件化开发能大幅提高应用开发效率、测试性、复用性等;
+- 常用的组件化技术：属性、自定义事件、插槽等
+- 降低更新范围，只重新渲染变化的组件
+- 组件的特点：高内聚、低耦合、单向数据流

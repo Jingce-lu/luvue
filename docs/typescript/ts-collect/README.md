@@ -7,3 +7,4 @@
 - [05-玩转 TypeScript 工具类型（下）](05-玩转TypeScript工具类型（下）.md)
 - [06-TypeScript 条件类型](06-TypeScript条件类型.md)
 - [07-TypeScript 内置工具](07-TypeScript内置工具.md)
+- [08-Type-challenges](08-Type-challenges.md)

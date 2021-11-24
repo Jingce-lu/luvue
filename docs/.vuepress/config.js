@@ -22,15 +22,52 @@ function getSidebar(sidebarPath) {
         );
         const curSidebarChildren = [];
         childrenPath.forEach(childrenItem => {
-          if (
-            childrenItem.toLocaleLowerCase() !== "readme.md" &&
-            childrenItem.indexOf(".md") >= 0 &&
-            item.indexOf(".") !== 0
-          ) {
-            curSidebarChildren.push({
-              title: childrenItem.replace(".md", ""),
-              path: `/${sidebarPath}/${item}/${childrenItem.replace(".md", "")}`
+          const menuPath2 = path.join(
+            process.cwd(),
+            "docs",
+            sidebarPath,
+            item,
+            childrenItem
+          );
+
+          if (!fs.lstatSync(menuPath2).isDirectory()) {
+            if (
+              childrenItem.toLocaleLowerCase() !== "readme.md" &&
+              childrenItem.indexOf(".md") >= 0 &&
+              item.indexOf(".") !== 0
+            ) {
+              curSidebarChildren.push({
+                title: childrenItem.replace(".md", ""),
+                path: `/${sidebarPath}/${item}/${childrenItem.replace(
+                  ".md",
+                  ""
+                )}`
+              });
+            }
+          } else {
+            let curSidebar = {
+              title: childrenItem,
+              path: `/${sidebarPath}/${item}/${childrenItem}/`
+            };
+            let curMenu = [];
+            const childrenPath2 = fs.readdirSync(menuPath2);
+            childrenPath2.forEach(childrenItem2 => {
+              if (
+                childrenItem2.toLocaleLowerCase() !== "readme.md" &&
+                childrenItem2.indexOf(".md") >= 0 &&
+                childrenItem.indexOf(".") !== 0
+              ) {
+                curMenu.push({
+                  title: childrenItem2.replace(".md", ""),
+                  path: `/${sidebarPath}/${item}/${childrenItem}/${childrenItem2.replace(
+                    ".md",
+                    ""
+                  )}`
+                });
+              }
             });
+            curSidebar.children = curMenu;
+            curSidebarChildren.push(curSidebar);
           }
         });
         curSidebar.children = curSidebarChildren;

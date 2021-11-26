@@ -83,7 +83,7 @@ function getSidebar(sidebarPath) {
   return sidebars;
 }
 module.exports = {
-  title: "Luvue notes",
+  title: "Ailjc notes",
   description: " ",
   dest: "./dist",
   head: [["link", { rel: " ", href: " " }]],

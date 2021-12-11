@@ -10,3 +10,4 @@
 - [07-精通 Vite2 之插件开发指南](07-精通Vite2之插件开发指南.md)
 - [08-vite2 进阶插件](08-vite2进阶插件.md)
 - [09-Vite2 搞 Vue2](09-Vite2搞Vue2.md)
+- [10-Vite 2 + React 实践](10-Vite2+React实践.md)

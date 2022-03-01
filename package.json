@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start1": "vuepress dev docs --no-cache",
+    "dev": "vuepress dev docs",
     "start": "vuepress dev docs",
     "build": "vuepress build docs",
     "publish": "npm run build && gh-pages -d dist",

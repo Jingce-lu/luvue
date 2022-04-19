@@ -19,29 +19,29 @@ npm install @babel/preset-env @babel/core rollup rollup-plugin-babel rollup-plug
 **rollup.config.js 文件编写**
 
 ```js
-import babel from "rollup-plugin-babel";
-import serve from "rollup-plugin-serve";
+import babel from 'rollup-plugin-babel';
+import serve from 'rollup-plugin-serve';
 export default {
-  input: "./src/index.js",
+  input: './src/index.js',
   output: {
-    format: "umd", // 模块化类型
-    file: "dist/umd/vue.js",
-    name: "Vue", // 打包后的全局变量的名字
-    sourcemap: true
+    format: 'umd', // 模块化类型
+    file: 'dist/umd/vue.js',
+    name: 'Vue', // 打包后的全局变量的名字
+    sourcemap: true,
   },
   plugins: [
     babel({
-      exclude: "node_modules/**"
+      exclude: 'node_modules/**',
     }),
-    process.env.ENV === "development"
+    process.env.ENV === 'development'
       ? serve({
           open: true,
-          openPage: "/public/index.html",
+          openPage: '/public/index.html',
           port: 3000,
-          contentBase: ""
+          contentBase: '',
         })
-      : null
-  ]
+      : null,
+  ],
 };
 ```
 
@@ -67,7 +67,7 @@ export default {
 导出 `vue` 构造函数
 
 ```js
-import { initMixin } from "./init";
+import { initMixin } from './init';
 
 function Vue(options) {
   this._init(options);
@@ -79,9 +79,9 @@ export default Vue;
 `init` 方法中初始化 `vue` 状态
 
 ```js
-import { initState } from "./state";
+import { initState } from './state';
 export function initMixin(Vue) {
-  Vue.prototype._init = function(options) {
+  Vue.prototype._init = function (options) {
     const vm = this;
     vm.$options = options;
     // 初始化状态
@@ -122,10 +122,10 @@ function initWatch() {}
 ### 1.初始化数据
 
 ```js
-import { observe } from "./observer/index.js";
+import { observe } from './observer/index.js';
 function initData(vm) {
   let data = vm.$options.data;
-  data = vm._data = typeof data === "function" ? data.call(vm) : data;
+  data = vm._data = typeof data === 'function' ? data.call(vm) : data;
   observe(data);
 }
 ```
@@ -158,11 +158,11 @@ function defineReactive(data, key, value) {
       if (newValue == value) return;
       observe(newValue);
       value = newValue;
-    }
+    },
   });
 }
 export function observe(data) {
-  if (typeof data !== "object" || data == null) {
+  if (typeof data !== 'object' || data == null) {
     return;
   }
   return new Observer(data);
@@ -172,7 +172,7 @@ export function observe(data) {
 ### 3.数组方法的劫持
 
 ```js
-import { arrayMethods } from "./array";
+import { arrayMethods } from './array';
 class Observer {
   // 观测值
   constructor(value) {
@@ -196,18 +196,18 @@ class Observer {
 ```js
 let oldArrayProtoMethods = Array.prototype;
 export let arrayMethods = Object.create(oldArrayProtoMethods);
-let methods = ["push", "pop", "shift", "unshift", "reverse", "sort", "splice"];
+let methods = ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'];
 methods.forEach(method => {
-  arrayMethods[method] = function(...args) {
+  arrayMethods[method] = function (...args) {
     const result = oldArrayProtoMethods[method].apply(this, args);
     const ob = this.__ob__;
     let inserted;
     switch (method) {
-      case "push":
-      case "unshift":
+      case 'push':
+      case 'unshift':
         inserted = args;
         break;
-      case "splice":
+      case 'splice':
         inserted = args.slice(2);
       default:
         break;
@@ -223,10 +223,10 @@ methods.forEach(method => {
 ```js
 class Observer {
   constructor(value) {
-    Object.defineProperty(value, "__ob__", {
+    Object.defineProperty(value, '__ob__', {
       enumerable: false,
       configurable: false,
-      value: this
+      value: this,
     });
     // ...
   }
@@ -245,15 +245,15 @@ function proxy(vm, source, key) {
     },
     set(newValue) {
       vm[source][key] = newValue;
-    }
+    },
   });
 }
 function initData(vm) {
   let data = vm.$options.data;
-  data = vm._data = typeof data === "function" ? data.call(vm) : data;
+  data = vm._data = typeof data === 'function' ? data.call(vm) : data;
   for (let key in data) {
     // 将_data上的属性全部代理给vm实例
-    proxy(vm, "_data", key);
+    proxy(vm, '_data', key);
   }
   observe(data);
 }
@@ -262,7 +262,7 @@ function initData(vm) {
 ## 三.模板编译
 
 ```js
-Vue.prototype._init = function(options) {
+Vue.prototype._init = function (options) {
   const vm = this;
   vm.$options = options;
   // 初始化状态
@@ -272,7 +272,7 @@ Vue.prototype._init = function(options) {
     vm.$mount(vm.$options.el);
   }
 };
-Vue.prototype.$mount = function(el) {
+Vue.prototype.$mount = function (el) {
   const vm = this;
   const options = vm.$options;
   el = document.querySelector(el);
@@ -313,7 +313,7 @@ function chars(text) {
 }
 function parseHTML(html) {
   while (html) {
-    let textEnd = html.indexOf("<");
+    let textEnd = html.indexOf('<');
     if (textEnd == 0) {
       const startTagMatch = parseStartTag();
       if (startTagMatch) {
@@ -344,14 +344,11 @@ function parseHTML(html) {
     if (start) {
       const match = {
         tagName: start[1],
-        attrs: []
+        attrs: [],
       };
       advance(start[0].length);
       let attr, end;
-      while (
-        !(end = html.match(startTagClose)) &&
-        (attr = html.match(attribute))
-      ) {
+      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
         advance(attr[0].length);
         match.attrs.push({ name: attr[1], value: attr[3] });
       }
@@ -364,7 +361,7 @@ function parseHTML(html) {
 }
 export function compileToFunctions(template) {
   parseHTML(template);
-  return function() {};
+  return function () {};
 }
 ```
 
@@ -395,7 +392,7 @@ function createASTElement(tagName, attrs) {
     type: ELEMENT_TYPE,
     children: [],
     attrs,
-    parent: null
+    parent: null,
   };
 }
 function start(tagName, attrs) {
@@ -415,11 +412,11 @@ function end(tagName) {
   }
 }
 function chars(text) {
-  text = text.replace(/\s/g, "");
+  text = text.replace(/\s/g, '');
   if (text) {
     currentParent.children.push({
       type: TEXT_TYPE,
-      text
+      text,
     });
   }
 }
@@ -465,27 +462,27 @@ function gen(node) {
     if (lastIndex < text.length) {
       tokens.push(JSON.stringify(text.slice(lastIndex)));
     }
-    return `_v(${tokens.join("+")})`;
+    return `_v(${tokens.join('+')})`;
   }
 }
 function getChildren(el) {
   // 生成儿子节点
   const children = el.children;
   if (children) {
-    return `${children.map(c => gen(c)).join(",")}`;
+    return `${children.map(c => gen(c)).join(',')}`;
   } else {
     return false;
   }
 }
 function genProps(attrs) {
   // 生成属性
-  let str = "";
+  let str = '';
   for (let i = 0; i < attrs.length; i++) {
     let attr = attrs[i];
-    if (attr.name === "style") {
+    if (attr.name === 'style') {
       let obj = {};
-      attr.value.split(";").forEach(item => {
-        let [key, value] = item.split(":");
+      attr.value.split(';').forEach(item => {
+        let [key, value] = item.split(':');
         obj[key] = value;
       });
       attr.value = obj;
@@ -496,9 +493,9 @@ function genProps(attrs) {
 }
 function generate(el) {
   let children = getChildren(el);
-  let code = `_c('${el.tag}',${
-    el.attrs.length ? `${genProps(el.attrs)}` : "undefined"
-  }${children ? `,${children}` : ""})`;
+  let code = `_c('${el.tag}',${el.attrs.length ? `${genProps(el.attrs)}` : 'undefined'}${
+    children ? `,${children}` : ''
+  })`;
   return code;
 }
 let code = generate(root);
@@ -521,8 +518,8 @@ export function compileToFunctions(template) {
 ### 1.初始化渲染 Watcher
 
 ```js
-import { mountComponent } from "./lifecycle";
-Vue.prototype.$mount = function(el) {
+import { mountComponent } from './lifecycle';
+Vue.prototype.$mount = function (el) {
   const vm = this;
   const options = vm.$options;
   el = document.querySelector(el);
@@ -546,7 +543,7 @@ lifecycle.js
 
 ```js
 export function lifecycleMixin() {
-  Vue.prototype._update = function(vnode) {};
+  Vue.prototype._update = function (vnode) {};
 }
 export function mountComponent(vm, el) {
   vm.$el = el;
@@ -562,7 +559,7 @@ render.js
 
 ```js
 export function renderMixin(Vue) {
-  Vue.prototype._render = function() {};
+  Vue.prototype._render = function () {};
 }
 ```
 
@@ -574,7 +571,7 @@ class Watcher {
   constructor(vm, exprOrFn, cb, options) {
     this.vm = vm;
     this.exprOrFn = exprOrFn;
-    if (typeof exprOrFn == "function") {
+    if (typeof exprOrFn == 'function') {
       this.getter = exprOrFn;
     }
     this.cb = cb;
@@ -595,24 +592,20 @@ export default Watcher;
 ### 2.生成虚拟 dom
 
 ```js
-import { createTextNode, createElement } from "./vdom/create-element";
+import { createTextNode, createElement } from './vdom/create-element';
 export function renderMixin(Vue) {
-  Vue.prototype._v = function(text) {
+  Vue.prototype._v = function (text) {
     // 创建文本
     return createTextNode(text);
   };
-  Vue.prototype._c = function() {
+  Vue.prototype._c = function () {
     // 创建元素
     return createElement(...arguments);
   };
-  Vue.prototype._s = function(val) {
-    return val == null
-      ? ""
-      : typeof val === "object"
-      ? JSON.stringify(val)
-      : val;
+  Vue.prototype._s = function (val) {
+    return val == null ? '' : typeof val === 'object' ? JSON.stringify(val) : val;
   };
-  Vue.prototype._render = function() {
+  Vue.prototype._render = function () {
     const vm = this;
     const { render } = vm.$options;
     let vnode = render.call(vm);
@@ -640,7 +633,7 @@ function vnode(tag, data, key, children, text) {
     data,
     key,
     children,
-    text
+    text,
   };
 }
 ```
@@ -650,9 +643,9 @@ function vnode(tag, data, key, children, text) {
 将虚拟节点渲染成真实节点
 
 ```js
-import { patch } from "./observer/patch";
+import { patch } from './observer/patch';
 export function lifecycleMixin(Vue) {
-  Vue.prototype._update = function(vnode) {
+  Vue.prototype._update = function (vnode) {
     const vm = this;
     vm.$el = patch(vm.$el, vnode);
   };
@@ -674,7 +667,7 @@ export function patch(oldVnode, vnode) {
 }
 function createElm(vnode) {
   let { tag, children, key, data, text } = vnode;
-  if (typeof tag === "string") {
+  if (typeof tag === 'string') {
     vnode.el = document.createElement(tag);
     updateProperties(vnode);
     children.forEach(child => {
@@ -689,11 +682,11 @@ function updateProperties(vnode) {
   let newProps = vnode.data || {}; // 获取当前老节点中的属性
   let el = vnode.el; // 当前的真实节点
   for (let key in newProps) {
-    if (key === "style") {
+    if (key === 'style') {
       for (let styleName in newProps.style) {
         el.style[styleName] = newProps.style[styleName];
       }
-    } else if (key === "class") {
+    } else if (key === 'class') {
       el.className = newProps.class;
     } else {
       // 给这个元素添加属性 值就是对应的值
@@ -708,11 +701,11 @@ function updateProperties(vnode) {
 ### 1.Mixin 原理
 
 ```js
-import { mergeOptions } from "../util/index.js";
+import { mergeOptions } from '../util/index.js';
 export function initGlobalAPI(Vue) {
   Vue.options = {};
 
-  Vue.mixin = function(mixin) {
+  Vue.mixin = function (mixin) {
     // 将属性合并到Vue.options上
     this.options = mergeOptions(this.options, mixin);
     return this;
@@ -724,14 +717,14 @@ export function initGlobalAPI(Vue) {
 
 ```js
 export const LIFECYCLE_HOOKS = [
-  "beforeCreate",
-  "created",
-  "beforeMount",
-  "mounted",
-  "beforeUpdate",
-  "updated",
-  "beforeDestroy",
-  "destroyed"
+  'beforeCreate',
+  'created',
+  'beforeMount',
+  'mounted',
+  'beforeUpdate',
+  'updated',
+  'beforeDestroy',
+  'destroyed',
 ];
 const strats = {};
 function mergeHook(parentVal, childValue) {
@@ -762,10 +755,10 @@ export function mergeOptions(parent, child) {
     if (strats[key]) {
       options[key] = strats[key](parent[key], child[key]);
     } else {
-      if (typeof parent[key] == "object" && typeof child[key] == "object") {
+      if (typeof parent[key] == 'object' && typeof child[key] == 'object') {
         options[key] = {
           ...parent[key],
-          ...child[key]
+          ...child[key],
         };
       } else {
         options[key] = child[key];
@@ -792,13 +785,13 @@ export function callHook(vm, hook) {
 ### 5.初始化流程中调用生命周期
 
 ```js
-Vue.prototype._init = function(options) {
+Vue.prototype._init = function (options) {
   const vm = this;
   vm.$options = mergeOptions(vm.constructor.options, options);
   // 初始化状态
-  callHook(vm, "beforeCreate");
+  callHook(vm, 'beforeCreate');
   initState(vm);
-  callHook(vm, "created");
+  callHook(vm, 'created');
   if (vm.$options.el) {
     vm.$mount(vm.$options.el);
   }
@@ -858,7 +851,7 @@ Object.defineProperty(data, key, {
     observe(newValue);
     value = newValue;
     dep.notify(); // 通知渲染watcher去更新
-  }
+  },
 });
 ```
 
@@ -933,11 +926,11 @@ function defineReactive(data, key, value) {
       observe(newValue);
       value = newValue;
       dep.notify();
-    }
+    },
   });
 }
 
-arrayMethods[method] = function(...args) {
+arrayMethods[method] = function (...args) {
   // ...
   ob.dep.notify();
   return result;
@@ -981,7 +974,7 @@ update(){
 scheduler
 
 ```js
-import { nextTick } from "../util/next-tick";
+import { nextTick } from '../util/next-tick';
 let has = {};
 let queue = [];
 
@@ -1027,7 +1020,7 @@ if (Promise) {
   let observe = new MutationObserver(flushCallbacks); // H5的api
   let textNode = document.createTextNode(1);
   observe.observe(textNode, {
-    characterData: true
+    characterData: true,
   });
   timerFunc = () => {
     textNode.textContent = 2;

@@ -1,5 +1,6 @@
 {
   "name": "luvue-study-notes",
+  "private": true,
   "version": "1.0.0",
   "description": "世路如今已惯,此心到处悠然",
   "main": "index.js",

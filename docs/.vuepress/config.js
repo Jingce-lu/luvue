@@ -83,7 +83,7 @@ module.exports = {
       includeLevel: [2, 3],
     },
   },
-  // base: "/luvue/",
+  base: '/luvue/',
   // configureWebpack: {
   //   resolve: {
   //     alias: {

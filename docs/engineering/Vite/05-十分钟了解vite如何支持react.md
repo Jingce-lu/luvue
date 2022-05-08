@@ -37,7 +37,7 @@ yarn dev
 
 <div align="center"><img :src="$withBase('/images/vite/vite1.awebp')" alt="vite/vite1.awebp"></div>
 
-index.html 里比源码多了一块 `vite/cline`t、`@react/refresh` 的代码，另外 `script` 的 type 都是 `module` 类型，我们来根据源码分析下 vite 是如何做了这一层转化。
+index.html 里比源码多了一块 `vite/clinet`、`@react/refresh` 的代码，另外 `script` 的 type 都是 `module` 类型，我们来根据源码分析下 vite 是如何做了这一层转化。
 
 ## 二、中间件（middleware）
 
@@ -209,7 +209,7 @@ if (!/\$RefreshReg\$\(/.test(result.code)) {
 import RefreshRuntime from '/@react-refresh';
 RefreshRuntime.injectIntoGlobalHook(window);
 window.$RefreshReg$ = () => {};
-window.$RefreshSig$ = () => type => type;
+window.$RefreshSig$ = () => (type) => type;
 window.__vite_plugin_react_preamble_installed__ = true;
 ```
 

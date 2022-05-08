@@ -57,7 +57,7 @@ export default function myExample() {
 
 下面钩子每次有模块请求时都会被调用:
 
-- `resolveId` 创建自定义确认函数，常用语定位第三方依赖
+- `resolveId` 创建自定义确认函数，常用于定位第三方依赖
 - `load` 创建自定义加载函数，可用于返回自定义的内容
 - `transform` 可用于转换已加载的模块内容
 
@@ -169,11 +169,11 @@ function matchRoute(req) {
   let method = req.method.toLowerCase();
   let routeList = mockRouteMap[method];
 
-  return routeList && routeList.find(item => item.path === url);
+  return routeList && routeList.find((item) => item.path === url);
 }
 
 function createRoute(mockConfList) {
-  mockConfList.forEach(mockConf => {
+  mockConfList.forEach((mockConf) => {
     let method = mockConf.type || 'get';
     let path = mockConf.url;
     let handler = mockConf.response;

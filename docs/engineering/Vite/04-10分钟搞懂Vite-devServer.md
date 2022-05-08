@@ -88,7 +88,7 @@ cli
 
 简单来讲，我们从敲下 `npm run dev` 执行 cli 命令的时候，会执行`/node_modules/vite/dist/node/cli.js`，调用 `createServer` 方法，传递 `vite.config.js` 或 cli 命令上的自定义 config，创建一个 `viteDevServer` 实例。
 
-接下来我们康康打造一个 `viteDevServer` 的生产流是什么~
+接下来我们看看打造一个 `viteDevServer` 的生产流是什么~
 
 ## 二、devServer 的构成
 
@@ -117,7 +117,7 @@ cli
 
 ### 2. watcher--FSWatcher
 
-vite 使用 [chokidar](https://www.npmjs.com/package/chokidar) 这个跨平台文件监听库，里面用到的方法也很容易理解，感兴趣的去康康~ 它主要是监听 `add` `unlink` `change`，即监听文件新增，删除，更新，从而更新模块图 moduleGraph，同步热更新。
+vite 使用 [chokidar](https://www.npmjs.com/package/chokidar) 这个跨平台文件监听库，里面用到的方法也很容易理解，感兴趣的去看看~ 它主要是监听 `add` `unlink` `change`，即监听文件新增，删除，更新，从而更新模块图 moduleGraph，同步热更新。
 
 ### 3. ModuleGraph
 
@@ -213,13 +213,13 @@ export default defineConfig({
       '/api': {
         target: 'http://jsonplaceholder.typicode.com',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
       // 正则表达式写法
       '^/fallback/.*': {
         target: 'http://jsonplaceholder.typicode.com',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/fallback/, ''),
+        rewrite: (path) => path.replace(/^\/fallback/, ''),
       },
       '/sunny': {
         bypass: (req, res, options) => {
@@ -322,7 +322,9 @@ if (config.base !== '/') {
 ```ts
 // 文件 /middlewares/base.ts
 import { parse as parseUrl } from 'url';
-export function baseMiddleware({ config }: ViteDevServer): Connect.NextHandleFunction {
+export function baseMiddleware({
+  config,
+}: ViteDevServer): Connect.NextHandleFunction {
   const base = config.base;
   return (req, res, next) => {
     const url = req.url!;
@@ -491,7 +493,8 @@ export function serveStaticMiddleware(
     // 也将别名应用于静态请求
     let redirected: string | undefined;
     for (const { find, replacement } of config.resolve.alias) {
-      const matches = typeof find === 'string' ? url.startsWith(find) : find.test(url);
+      const matches =
+        typeof find === 'string' ? url.startsWith(find) : find.test(url);
       if (matches) {
         redirected = url.replace(find, replacement);
         break;
@@ -576,7 +579,9 @@ export function errorMiddleware(
 ): Connect.ErrorHandleFunction {
   // 请注意，必须保留 4 个 arg 才能进行 connect，以将其视为错误中间件
   return (err: RollupError, _req, res, next) => {
-    const msg = buildErrorMessage(err, [chalk.red(`Internal server error: ${err.message}`)]);
+    const msg = buildErrorMessage(err, [
+      chalk.red(`Internal server error: ${err.message}`),
+    ]);
 
     server.config.logger.error(msg, {
       // 日志记录错误
@@ -603,3 +608,8 @@ export function errorMiddleware(
 ## 五、createServer 总结
 
 这就有了 cli 里的[创建 server](https://cn.vitejs.dev/guide/api-javascript.html#createserver) 方法啦~ 总结一下：
+
+本文从初始第一步的 cli 命令开始来引入，vite 命令做了什么，然后引导大家找到 `createServer` 的入口。
+其次，我们深入探究 `createServer` 需要的"五脏十五腑",有 `websocketServer`,`fsWatcher`,`moduleGraph` 等 5 个模块来支撑需要的零件，根据 15 个中间件的分工来串联整个加工流程，最终打磨出我们的 devServer。
+
+我们可以看到全程么有 `bundle` 的痕迹，vite 很好的使用了 `esmodule` 来做到及时有效的模块热重载，冷启动快速，开发体验杠杠的

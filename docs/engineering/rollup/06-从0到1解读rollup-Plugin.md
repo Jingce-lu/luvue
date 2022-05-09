@@ -136,16 +136,16 @@ export default {
 
 除了以调用时机来划分钩子函数以外，我们还可以以钩子函数处理方式来划分，这样来看钩子函数就主要有以下四种版本：
 
-- async: 处理 promise 的异步钩子，即这类 hook 可以返回一个解析为相同类型值的 promise，同步版本 hook 将被标记为  sync。
-- first: 如果多个插件实现了相同的钩子函数，那么会串式执行，从头到尾，但是，如果其中某个的返回值不是 null 也不是 undefined 的话，会直接终止掉后续插件。
-- sequential: 如果多个插件实现了相同的钩子函数，那么会串式执行，按照使用插件的顺序从头到尾执行，如果是异步的，会等待之前处理完毕，在执行下一个插件。
-- parallel: 同上，不过如果某个插件是异步的，其后的插件不会等待，而是并行执行，这个也就是我们在 rollup.rollup() 阶段看到的处理方式。
+- `async`: 处理 `promise` 的异步钩子，即这类 `hook` 可以返回一个解析为相同类型值的 `promise`，同步版本 `hook` 将被标记为  `sync`。
+- `first`: 如果多个插件实现了相同的钩子函数，那么会串式执行，从头到尾，但是，如果其中某个的返回值不是 `null` 也不是 `undefined` 的话，会直接终止掉后续插件。
+- `sequential`: 如果多个插件实现了相同的钩子函数，那么会串式执行，按照使用插件的顺序从头到尾执行，如果是异步的，会等待之前处理完毕，在执行下一个插件。
+- `parallel`: 同上，不过如果某个插件是异步的，其后的插件不会等待，而是并行执行，这个也就是我们在 `rollup.rollup()` 阶段看到的处理方式。
 
 ### 构建钩子函数
 
-为了与构建过程交互，你的插件对象需要包含一些构建钩子函数。构建钩子是构建的各个阶段调用的函数。构建钩子函数可以影响构建执行方式、提供构建的信息或者在构建完成后修改构建。rollup 中有不同的构建钩子函数，在构建阶段执行时，它们被 [rollup.rollup(inputOptions)](https://github.com/rollup/rollup/blob/07b3a02069594147665daa95d3fa3e041a82b2d0/cli/run/build.ts#L34) 触发。
+为了与构建过程交互，你的插件对象需要包含一些构建钩子函数。**构建钩子是构建的各个阶段调用的函数**。构建钩子函数可以影响构建执行方式、提供构建的信息或者在构建完成后修改构建。rollup 中有不同的构建钩子函数，在构建阶段执行时，它们被 [rollup.rollup(inputOptions)](https://github.com/rollup/rollup/blob/07b3a02069594147665daa95d3fa3e041a82b2d0/cli/run/build.ts#L34) 触发。
 ​
-构建钩子函数主要关注在 Rollup 处理输入文件之前定位、提供和转换输入文件。构建阶段的第一个钩子是 options，最后一个钩子总是 buildEnd，除非有一个构建错误，在这种情况下 closeBundle 将在这之后被调用。
+构建钩子函数主要关注在 Rollup 处理输入文件之前定位、提供和转换输入文件。构建阶段的第一个钩子是 `options`，最后一个钩子总是 `buildEnd`，除非有一个构建错误，在这种情况下 `closeBundle` 将在这之后被调用。
 
 顺便提一下，在观察模式下，`watchChange` 钩子可以在任何时候被触发，以通知新的运行将在当前运行产生其输出后被触发。当 `watcher` 关闭时，`closeWatcher` 钩子函数将被触发。
 
@@ -164,9 +164,9 @@ export default {
 
 [PluginDriver](https://github.com/rollup/rollup/blob/07b3a02069594147665daa95d3fa3e041a82b2d0/src/utils/PluginDriver.ts#L124)  中有 9 个 hook 加载函数。主要是因为每种类别的 hook 都有同步和异步的版本。
 ​
-接下来先看看 9 个 hook 加载函数及其应用场景（看完第一遍不知所以然，但是别人看了咱也得看，先看了再说，看不懂就多看几遍 QAQ ～）
+接下来先看看 9 个 `hook` 加载函数及其应用场景（看完第一遍不知所以然，但是别人看了咱也得看，先看了再说，看不懂就多看几遍 QAQ ～）
 ​
-排名不分先后，仅参考它们在 PluginDriver.ts 中出现的顺序 🌠。
+排名不分先后，仅参考它们在 `PluginDriver.ts` 中出现的顺序 🌠。
 ​
 
 <div align="center"><img :src="$withBase('/images/rollup/rollup8.awebp')" alt="rollup/rollup8.awebp"></div>

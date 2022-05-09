@@ -227,7 +227,7 @@ import { createProdMockServer } from 'vite-plugin-mock/es/createProdMockServer';
 const modules = import.meta.globEager('./**/*.ts');
 
 const mockModules: any[] = [];
-Object.keys(modules).forEach(key => {
+Object.keys(modules).forEach((key) => {
   if (key.includes('/_')) {
     return;
   }
@@ -289,7 +289,11 @@ build/vite/plugin/index.ts：
 // ...
 import { configMockPlugin } from './mock';
 
-export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, pkg: any) {
+export function createVitePlugins(
+  viteEnv: ViteEnv,
+  isBuild: boolean,
+  pkg: any
+) {
   // ...
   const { VITE_USE_MOCK: shouldUseMock } = viteEnv;
   // vite-plugin-mock
@@ -331,31 +335,31 @@ src/views/demo/index.vue
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, reactive } from 'vue';
-  import { getUserInfo as getUserInfoApi } from '@/api/user/index';
+import { defineComponent, onMounted, reactive } from 'vue';
+import { getUserInfo as getUserInfoApi } from '@/api/user/index';
 
-  export default defineComponent({
-    setup() {
-      // ------------------------------------------ reactive ------------------------------------------
+export default defineComponent({
+  setup() {
+    // ------------------------------------------ reactive ------------------------------------------
 
-      const getUserInfo = async () => {
-        try {
-          const result = await getUserInfoApi();
-          if (result && result.code === 0 && result.data) {
-            console.log(result.data);
-          }
-        } catch (error) {
-          console.log('error', error);
+    const getUserInfo = async () => {
+      try {
+        const result = await getUserInfoApi();
+        if (result && result.code === 0 && result.data) {
+          console.log(result.data);
         }
-      };
-      onMounted(() => {
-        getUserInfo();
-      });
-      return {
-        userInfo,
-      };
-    },
-  });
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+    onMounted(() => {
+      getUserInfo();
+    });
+    return {
+      userInfo,
+    };
+  },
+});
 </script>
 
 <style lang="scss"></style>
@@ -468,7 +472,11 @@ build/vite/plugin/index.ts：
 // ...
 import { configVisualizerConfig } from './visualizer';
 
-export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, pkg: any) {
+export function createVitePlugins(
+  viteEnv: ViteEnv,
+  isBuild: boolean,
+  pkg: any
+) {
   // ...
   // rollup-plugin-visualizer
   vitePlugins.push(configVisualizerConfig());
@@ -508,3 +516,285 @@ npm run report
 生成报告后会自动打开浏览器，就像下面这样 👇🏻
 
 <img :src="$withBase('/images/vite/vite70.awebp')" alt="vite/vite70.awebp">
+
+## 五、vite-plugin-theme
+
+### 1.说明
+
+这个是用于动态更改界面主题色的 vite 插
+
+- npm：[vite-plugin-theme]（https://www.npmjs.com/package/vite-plugin-theme
+- git：[vite-plugin-theme](https://github.com/anncwb/vite-plugin-theme)
+
+### 2.安装
+
+```sh
+yarn add vite-plugin-theme --dev
+```
+
+### 3.配置插件
+
+`build/vite/plugin/theme.ts`：
+
+```js
+/**
+ * 网站主题颜色切换的Vite插件
+ * https://github.com/anncwb/vite-plugin-theme
+ */
+import {
+  viteThemePlugin,
+  mixLighten,
+  mixDarken,
+  tinycolor,
+} from 'vite-plugin-theme';
+import { getThemeColors, generateColors } from '../../config/themeConfig';
+
+export function configThemePlugin() {
+  const colors = generateColors({
+    mixDarken,
+    mixLighten,
+    tinycolor,
+  });
+
+  const plugin = viteThemePlugin({
+    // 生成的很多个颜色方法
+    colorVariables: [...getThemeColors(), ...colors],
+  });
+  return plugin;
+}
+```
+
+### 4.配置 Vite
+
+`build/vite/plugin/index.ts`：
+
+```js
+// ...
+import { configThemePlugin } from './theme';
+
+export function createVitePlugins(
+  viteEnv: ViteEnv,
+  isBuild: boolean,
+  pkg: any
+) {
+  // ...
+  //vite-plugin-theme
+  vitePlugins.push(configThemePlugin());
+
+  return vitePlugins;
+}
+```
+
+### 5.修改主题方法
+
+之后要修改主题，直接调用一下这个方法即可。
+
+`src/theme/index.ts`：
+
+```js
+import {
+  getThemeColors,
+  ThemeMode,
+  generateColors,
+} from '../../build/config/themeConfig';
+
+import { replaceStyleVariables } from 'vite-plugin-theme/es/client';
+import {
+  mixLighten,
+  mixDarken,
+  tinycolor,
+} from 'vite-plugin-theme/es/colorUtils';
+
+export async function changeTheme(color: string, theme?: ThemeMode) {
+  const colors = generateColors({
+    mixDarken,
+    mixLighten,
+    tinycolor,
+    color,
+  });
+
+  return await replaceStyleVariables({
+    colorVariables: [...getThemeColors(color, theme), ...colors],
+  });
+}
+```
+
+## 六、vite-plugin-imagemin
+
+### 1.说明
+
+[vite-plugin-imagemin](https://www.npmjs.com/package/vite-plugin-imagemin) ：一个压缩图片资源的 vite 插件。
+
+### 2.配置镜像
+
+`package.json`：
+
+> 官方建议：用于安装 imagemin 的依赖关系，因为中国可能没有安装 imagemin
+
+```json
+"resolutions": {
+  "bin-wrapper": "npm:bin-wrapper-china"
+},
+```
+
+### 3.安装
+
+```sh
+yarn add vite-plugin-imagemin --dev
+```
+
+### 4.配置插件
+
+`build/vite/plugin/imagemin.ts`：
+
+```js
+/**
+ * 用于压缩生产环境输出的图片资源
+ * https://github.com/anncwb/vite-plugin-imagemin
+ */
+
+import viteImagemin from 'vite-plugin-imagemin';
+
+export function configImageminPlugin() {
+  const plugin = viteImagemin({
+    gifsicle: {
+      optimizationLevel: 7,
+      interlaced: false,
+    },
+    optipng: {
+      optimizationLevel: 7,
+    },
+    mozjpeg: {
+      quality: 8,
+    },
+    pngquant: {
+      quality: [0.8, 0.9],
+      speed: 4,
+    },
+    svgo: {
+      plugins: [
+        {
+          removeViewBox: false,
+        },
+        {
+          removeEmptyAttrs: false,
+        },
+      ],
+    },
+  });
+  return plugin;
+}
+```
+
+详细的配置信息可以看 [options](https://github.com/anncwb/vite-plugin-imagemin#options)
+
+### 5.配置 Vite
+
+`build/vite/plugin/index.ts`：
+
+```js
+// ...
+import { configImageminPlugin } from './imagemin';
+
+export function createVitePlugins(
+  viteEnv: ViteEnv,
+  isBuild: boolean,
+  pkg: any
+) {
+  // ...
+  const { VITE_USE_IMAGEMIN: shouldUseImagemin } = viteEnv;
+  // 生产环境使用插件
+  if (isBuild) {
+    // vite-plugin-imagemin
+    shouldUseImagemin && vitePlugins.push(configImageminPlugin());
+  }
+
+  return vitePlugins;
+}
+```
+
+## 七、 vite-plugin-pwa
+
+### 1.说明
+
+- [vite-plugin-pwa](https://www.npmjs.com/package/vite-plugin-pwa) ：PWA 一些技术集成。
+- [Service Worker-参考链接](https://www.jianshu.com/p/768be2733872)
+- [PWA-MDN 说明](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
+
+如果你还不清楚 `PWA` 是什么也没关系。直接配置即可。不影响应用在网页端的运行。
+
+### 2.安装
+
+```sh
+yarn add vite-plugin-pwa --dev
+```
+
+### 3.配置插件
+
+`build/vite/plugin/pwa.ts`：
+
+```js
+/**
+ * vite pwa 0 配置插件
+ * https://github.com/antfu/vite-plugin-pwa
+ */
+
+import { VitePWA } from 'vite-plugin-pwa';
+
+export function configPwaConfig(env: ViteEnv) {
+  const {
+    VITE_USE_PWA: shouldUsePwa,
+    VITE_GLOB_APP_TITLE: appTitle,
+    VITE_GLOB_APP_SHORT_NAME: shortName,
+  } = env;
+
+  if (shouldUsePwa) {
+    // vite-plugin-pwa
+    const pwaPlugin = VitePWA({
+      manifest: {
+        name: appTitle,
+        short_name: shortName,
+        icons: [
+          {
+            src: './resource/img/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: './resource/img/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+    });
+    return pwaPlugin;
+  }
+  return [];
+}
+```
+
+### 4.配置 Vite
+
+`build/vite/plugin/index.ts`：
+
+```js
+// ...
+import { configPwaConfig } from './pwa';
+
+export function createVitePlugins(
+  viteEnv: ViteEnv,
+  isBuild: boolean,
+  pkg: any
+) {
+  // ...
+  // 生产环境使用插件
+  if (isBuild) {
+    // ...
+    // vite-plugin-pwa
+    vitePlugins.push(configPwaConfig(viteEnv));
+  }
+
+  return vitePlugins;
+}
+```

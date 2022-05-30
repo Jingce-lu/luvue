@@ -3,7 +3,7 @@
 - [Rollup](rollup)
 - [Vite](Vite)
 - [Webpack](webpack)
-- [渲染性能优化](渲染性能优化)
+- [other](other)
 - [Babel](babel)
 - [Loader](Loader)
 - [Tabable](Tabable)

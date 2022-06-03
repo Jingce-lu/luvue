@@ -42,7 +42,7 @@ mac 因为有权限问题，这里我们加`sudo`来执行命令
 
 ```sh
 #! /usr/bin/env node
-console.log('珠峰架构');  #! 这句表示采用node来执行此文件，同理 shell可以表示 sh
+console.log('架构');  #! 这句表示采用node来执行此文件，同理 shell可以表示 sh
 ```
 
 更新 package.json 文件
@@ -57,7 +57,7 @@ console.log('珠峰架构');  #! 这句表示采用node来执行此文件，同�
 
 `npm link`
 
-这样我们在命令行中直接输入 my-pack 就可以 打印出珠峰架构
+这样我们在命令行中直接输入 my-pack 就可以 打印出架构
 
 ### 2.本地安装
 

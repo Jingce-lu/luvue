@@ -86,38 +86,35 @@ console.log(c.name);
 
 - 将每个文件视为一个独立的模块
 - 分析模块之间的依赖关系，将模块中 import export 相关的内容做一次替换，比如：<br />
-
-```js
-// c.js
-import b from './b';
-export default {
-  name: 'c',
-};
-// 最后被转化为
-var __WEBPACK_IMPORTED_MODULE_0__b__ = __webpack_require__(0);
-// 这里需要特别注意一点， Webpack 将 a 属性作为模块的 default 值
-__webpack_exports__['a'] = {
-  name: 'c',
-};
-```
-
+  ```js
+  // c.js
+  import b from './b';
+  export default {
+    name: 'c',
+  };
+  // 最后被转化为
+  var __WEBPACK_IMPORTED_MODULE_0__b__ = __webpack_require__(0);
+  // 这里需要特别注意一点， Webpack 将 a 属性作为模块的 default 值
+  __webpack_exports__['a'] = {
+    name: 'c',
+  };
+  ```
 - 给所有模块外面加一层包装函数，使其成为模块初始化函数<br />
 - 把所有模块初始化函数合成一个数组，赋值给 modules 变量<br />
+  拿 c.js 做个例子，它最后会被包装成如下形式：
 
-拿 c.js 做个例子，它最后会被包装成如下形式：
-
-```js
-function (module, __webpack_exports__, __webpack_require__) {
-  var __WEBPACK_IMPORTED_MODULE_0__b__ = __webpack_require__(0)
-  __webpack_exports__["a"] = ({
-    name: 'c'
-  })
-}
-```
+  ```js
+  function (module, __webpack_exports__, __webpack_require__) {
+    var __WEBPACK_IMPORTED_MODULE_0__b__ = __webpack_require__(0)
+    __webpack_exports__["a"] = ({
+      name: 'c'
+    })
+  }
+  ```
 
 ## modules && **webpack_exports\*\***\*\*
 
-上面提到的模块初始化函数中，第一个参数叫 module，第二个参数叫 **webpack_exports**，它们有什么联系和区别呢？<br />module 可以理解成模块的「元信息」，里面不仅存着我们真正用到的模块内容，也存了一些模块 id 等信息。<br />**webpack_exports** 是我们真正「require」时得到的对象。<br />这两个对象之间有如下的关系：module.exports === **webpack_exports**<br />在模块初始化函数执行过程中，会对 **webpack_exports**（刚传入的时候为空对象）赋上新的属性，这也是为什么我叫这个函数为模块初始化函数的原因 -- 整个过程就是为了「构造」出一个新的 **webpack_exports**对象。<br />Webpack 中还有一个 installedModules 变量，通过它来保存这些已加载过的模块的引用。
+上面提到的模块初始化函数中，第一个参数叫 module，第二个参数叫 **webpack_exports**，它们有什么联系和区别呢？<br />module 可以理解成模块的「元信息」，里面不仅存着我们真正用到的模块内容，也存了一些模块 id 等信息。<br />**webpack_exports** 是我们真正「require」时得到的对象。<br />这两个对象之间有如下的关系：`module.exports === webpack_exports`<br />在模块初始化函数执行过程中，会对 **`webpack_exports`**（刚传入的时候为空对象）赋上新的属性，这也是为什么我叫这个函数为模块初始化函数的原因 -- 整个过程就是为了「构造」出一个新的 **webpack_exports**对象。<br />Webpack 中还有一个 installedModules 变量，通过它来保存这些已加载过的模块的引用。
 
 ## 模块 id
 

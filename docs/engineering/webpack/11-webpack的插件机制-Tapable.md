@@ -43,11 +43,11 @@ sync.call('a', '2');
 
 上述代码定义了一个同步串行钩子，并声明了接收的参数的个数，可以通过 `hook` 实例对象（`SyncHook` 本身也是继承自 `Hook` 类的）的 `tap` 方法订阅事件，然后利用 `call` 函数触发订阅事件，执行 `callback` 函数，值得注意的是 call 传入参数的数量需要与实例化时传递给钩子类构造函数的数组长度保持一致，否则，即使传入了多个，也只能接收到实例化时定义的参数个数。
 
-| 序号 | 钩子名称                 | 执行方式 | 使用要点                                                                                                                               |
-| ---- | ------------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | SyncHook                 | 同步串行 | 不关心监听函数的返回值                                                                                                                 |
-| 2    | SyncBailHook             | 同步串行 | 只要监听函数中有一个函数的返回值不为 null,则跳过剩余逻辑                                                                               |
-| 3    | SyncWaterfallHook        | 同步串行 | 上一个监听函数的返回值将作为参数传递给下一个监听函数                                                                                   |
+| 序号 | 钩子名称                 | 执行方式 | 使用要点    |
+| ---- | ------------------------ | ----------------------- | -------------------------------------------------------------------------------------------- |
+| 1    | SyncHook                 | 同步串行 | 不关心监听函数的返回值                                                |
+| 2    | SyncBailHook             | 同步串行 | 只要监听函数中有一个函数的返回值不为 null,则跳过剩余逻辑                   |
+| 3    | SyncWaterfallHook        | 同步串行 | 上一个监听函数的返回值将作为参数传递给下一个监听函数                        |
 | 4    | SyncLoopHook             | 同步串行 | 当监听函数被触发的时候，如果该监听函数返回 true 时则这个监听函数会反复执行，如果返回 undefined 则表示退出循环                          |
 | 5    | AsyncParallelHook        | 异步并行 | 不关心监听函数的返回值                                                                                                                 |
 | 6    | AsyncParallelBailHook    | 异步并行 | 只要监听函数的返回值不为 null，就会忽略后面的监听函数执行，直接跳跃到 callAsync 等触发函数绑定的回调函数，然后执行这个被绑定的回调函数 |
@@ -62,14 +62,17 @@ sync.call('a', '2');
 注册事件回调有三个方法： `tap`、`tapAsync` 和 `tapPromise`，其中 `tapAsync` 和 `tapPromise` 不能用于 `Sync` 开头的钩子类，强行使用会报错。`tap` 的使用方式在上文已经展示过了，就用官方文档的例子展示下 `tapAsync` 的使用方式，相比于 `tap`，`tapAsync` 需要执行 `callback` 函数才能确保流程会走到下一个插件中去。
 
 ```js
-myCar.hooks.calculateRoutes.tapAsync('BingMapsPlugin', (source, target, routesList, callback) => {
-  bing.findRoute(source, target, (err, route) => {
-    if (err) return callback(err);
-    routesList.add(route);
-    // call the callback
-    callback();
-  });
-});
+myCar.hooks.calculateRoutes.tapAsync(
+  'BingMapsPlugin',
+  (source, target, routesList, callback) => {
+    bing.findRoute(source, target, (err, route) => {
+      if (err) return callback(err);
+      routesList.add(route);
+      // call the callback
+      callback();
+    });
+  }
+);
 ```
 
 ## 4、触发事件

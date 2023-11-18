@@ -197,7 +197,7 @@ class Observer {
 let oldArrayProtoMethods = Array.prototype;
 export let arrayMethods = Object.create(oldArrayProtoMethods);
 let methods = ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'];
-methods.forEach(method => {
+methods.forEach((method) => {
   arrayMethods[method] = function (...args) {
     const result = oldArrayProtoMethods[method].apply(this, args);
     const ob = this.__ob__;
@@ -348,7 +348,10 @@ function parseHTML(html) {
       };
       advance(start[0].length);
       let attr, end;
-      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
+      while (
+        !(end = html.match(startTagClose)) &&
+        (attr = html.match(attribute))
+      ) {
         advance(attr[0].length);
         match.attrs.push({ name: attr[1], value: attr[3] });
       }
@@ -374,7 +377,7 @@ export function compileToFunctions(template) {
     tag:'div',
     type:1,
     children:[{tag:'span',type:1,attrs:[],parent:'div对象'}],
-    attrs:[{name:'zf',age:10}],
+    attrs:[{name:'ailjc',age:10}],
     parent:null
 }
 ```
@@ -469,7 +472,7 @@ function getChildren(el) {
   // 生成儿子节点
   const children = el.children;
   if (children) {
-    return `${children.map(c => gen(c)).join(',')}`;
+    return `${children.map((c) => gen(c)).join(',')}`;
   } else {
     return false;
   }
@@ -481,7 +484,7 @@ function genProps(attrs) {
     let attr = attrs[i];
     if (attr.name === 'style') {
       let obj = {};
-      attr.value.split(';').forEach(item => {
+      attr.value.split(';').forEach((item) => {
         let [key, value] = item.split(':');
         obj[key] = value;
       });
@@ -493,9 +496,9 @@ function genProps(attrs) {
 }
 function generate(el) {
   let children = getChildren(el);
-  let code = `_c('${el.tag}',${el.attrs.length ? `${genProps(el.attrs)}` : 'undefined'}${
-    children ? `,${children}` : ''
-  })`;
+  let code = `_c('${el.tag}',${
+    el.attrs.length ? `${genProps(el.attrs)}` : 'undefined'
+  }${children ? `,${children}` : ''})`;
   return code;
 }
 let code = generate(root);
@@ -603,7 +606,11 @@ export function renderMixin(Vue) {
     return createElement(...arguments);
   };
   Vue.prototype._s = function (val) {
-    return val == null ? '' : typeof val === 'object' ? JSON.stringify(val) : val;
+    return val == null
+      ? ''
+      : typeof val === 'object'
+      ? JSON.stringify(val)
+      : val;
   };
   Vue.prototype._render = function () {
     const vm = this;
@@ -670,7 +677,7 @@ function createElm(vnode) {
   if (typeof tag === 'string') {
     vnode.el = document.createElement(tag);
     updateProperties(vnode);
-    children.forEach(child => {
+    children.forEach((child) => {
       return vnode.el.appendChild(createElm(child));
     });
   } else {
@@ -738,7 +745,7 @@ function mergeHook(parentVal, childValue) {
     return parentVal;
   }
 }
-LIFECYCLE_HOOKS.forEach(hook => {
+LIFECYCLE_HOOKS.forEach((hook) => {
   strats[hook] = mergeHook;
 });
 export function mergeOptions(parent, child) {
@@ -869,7 +876,7 @@ class Dep {
     }
   }
   notify() {
-    this.subs.forEach(watcher => watcher.update());
+    this.subs.forEach((watcher) => watcher.update());
   }
   addSub(watcher) {
     this.subs.push(watcher);
@@ -1007,7 +1014,7 @@ util/next-tick.js
 ```js
 let callbacks = [];
 function flushCallbacks() {
-  callbacks.forEach(cb => cb());
+  callbacks.forEach((cb) => cb());
 }
 let timerFunc;
 if (Promise) {

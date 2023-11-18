@@ -8,7 +8,7 @@
 
 ```js
 export default {
-  name: "LuTree",
+  name: 'LuTree',
   setup() {
     return () => <h1>hello tree</h1>;
   },
@@ -18,8 +18,8 @@ export default {
 ### 2.注册树组件
 
 ```js
-import Tree from "./tree.jsx";
-import "../../style/tree.scss";
+import Tree from './tree.jsx';
+import '../../style/tree.scss';
 Tree.install = (app) => {
   app.component(Tree.name, Tree);
 };
@@ -36,29 +36,29 @@ export default Tree;
 const state = reactive({
   treeData: [
     {
-      id: "1",
-      name: "菜单1",
+      id: '1',
+      name: '菜单1',
       children: [
         {
-          id: "1-1",
-          name: "菜单1-1",
-          children: [{ id: "1-1-1", name: "菜单1-1-1" }],
+          id: '1-1',
+          name: '菜单1-1',
+          children: [{ id: '1-1-1', name: '菜单1-1-1' }],
         },
       ],
     },
     {
-      id: "2",
-      name: "菜单2",
+      id: '2',
+      name: '菜单2',
       children: [
         {
-          id: "2-1",
-          name: "菜单2-1",
-          children: [{ id: "2-1-1", name: "菜单2-1-1" }],
+          id: '2-1',
+          name: '菜单2-1',
+          children: [{ id: '2-1-1', name: '菜单2-1-1' }],
         },
         {
-          id: "2-2",
-          name: "菜单2-2",
-          children: [{ id: "2-2-1", name: "菜单2-2-1" }],
+          id: '2-2',
+          name: '菜单2-2',
+          children: [{ id: '2-2-1', name: '菜单2-2-1' }],
         },
       ],
     },
@@ -68,7 +68,7 @@ const state = reactive({
 
 ```js
 export default {
-  name: "ZfTree",
+  name: 'AiljcTree',
   props: {
     data: {
       type: Array,
@@ -85,15 +85,15 @@ export default {
       function renderChild(item) {
         // 渲染每一个节点
         return (
-          <div class="zf-tree-node">
-            <div class="zf-tree-label">{item.name}</div>
+          <div class='ai-tree-node'>
+            <div class='ai-tree-label'>{item.name}</div>
             {item.children && item.children.map((child) => renderChild(child))}
           </div>
         );
       }
       return data.map((item) => renderChild(item));
     }
-    return () => <div class="zf-tree">{renderNode(data)}</div>;
+    return () => <div class='ai-tree'>{renderNode(data)}</div>;
   },
 };
 ```
@@ -103,7 +103,7 @@ export default {
 ### 2.组件的分割
 
 ```js
-import TreeNode from "./tree-node";
+import TreeNode from './tree-node';
 export default {
   components: {
     [TreeNode.name]: TreeNode,
@@ -118,14 +118,14 @@ export default {
       // 渲染子节点
       return data.map((item) => <zf-tree-node data={item}></zf-tree-node>);
     }
-    return () => <div class="zf-tree">{renderNode(data)}</div>;
+    return () => <div class='ai-tree'>{renderNode(data)}</div>;
   },
 };
 ```
 
 ```js
 export default {
-  name: "ZfTreeNode",
+  name: 'AiljcTreeNode',
   props: {
     data: {
       type: Object,
@@ -135,9 +135,9 @@ export default {
     const data = props.data;
     return () => {
       return (
-        <div class="zf-tree-node">
-          <div class="zf-tree-label">{data.name}</div>
-          <div class="zf-tree-list">
+        <div class='ai-tree-node'>
+          <div class='ai-tree-label'>{data.name}</div>
+          <div class='ai-tree-list'>
             {data.children &&
               data.children.map((child) => (
                 <zf-tree-node data={child}></zf-tree-node>
@@ -153,8 +153,8 @@ export default {
 ### 3.美化树组件样式
 
 ```scss
-@import "./common/_var.scss";
-@import "./mixins/mixins.scss";
+@import './common/_var.scss';
+@import './mixins/mixins.scss';
 
 @include blockquote(tree) {
   position: relative;
@@ -177,8 +177,8 @@ const showArrow = computed(() => {
   return data.children && data.children.length > 0;
 });
 const classes = computed(() => [
-  "zf-tree-node",
-  !showArrow.value && "zf-tree-no-expand",
+  'ai-tree-node',
+  !showArrow.value && 'ai-tree-no-expand',
 ]);
 <div class={classes.value}></div>;
 ```
@@ -323,7 +323,7 @@ updateTreeUp(node,checked){
 ```
 
 ```js
-provide("TREE_PROVIDER", {
+provide('TREE_PROVIDER', {
   treeMethods: methods,
 });
 ```
@@ -331,7 +331,7 @@ provide("TREE_PROVIDER", {
 > 在父组件中将方法暴露出去, 以便子组件调用这些方法
 
 ```js
-let { treeMethods } = inject("TREE_PROVIDER");
+let { treeMethods } = inject('TREE_PROVIDER');
 const methods = {
   handleExpand() {
     data.expand = !data.expand;
@@ -370,14 +370,14 @@ function loadFn(data, cb) {
 ```
 
 ```js
-provide("TREE_PROVIDER", {
+provide('TREE_PROVIDER', {
   treeMethods: methods,
   load: props.load,
 });
 ```
 
 ```js
-let { treeMethods, load } = inject("TREE_PROVIDER");
+let { treeMethods, load } = inject('TREE_PROVIDER');
 const methods = {
   handleExpand() {
     if (data.children && data.children.length == 0) {
@@ -445,7 +445,7 @@ watch(data, () => {
 ```
 
 ```js
-provide("TREE_PROVIDER", {
+provide('TREE_PROVIDER', {
   treeMethods: methods,
   load: props.load,
   slot: context.slots.default,
@@ -453,7 +453,7 @@ provide("TREE_PROVIDER", {
 ```
 
 ```js
-let { treeMethods, load, slot } = inject("TREE_PROVIDER");
+let { treeMethods, load, slot } = inject('TREE_PROVIDER');
 {
   slot ? slot(data) : <span>{data.name}</span>;
 }
@@ -465,9 +465,9 @@ let { treeMethods, load, slot } = inject("TREE_PROVIDER");
 
 ```js
 const classes = computed(() => [
-    'zf-tree-node',
-    !showArrow.value && 'zf-tree-no-expand',
-    draggable && 'zf-tree-draggable'
+    'ai-tree-node',
+    !showArrow.value && 'ai-tree-no-expand',
+    draggable && 'ai-tree-draggable'
 ]);
 const instance = getCurrentInstance()
 const dragEvent = {

@@ -26,14 +26,15 @@ pnpm init -y
   "scripts": {},
   "license": "ISC"
 }
+```
 这样配置之后，就可以根据不同的命令，来启动不同的项目了。
 接下来就是需要安装依赖进行测试了，不过安装前还需要配置一个特殊的文件 pnpm-workspace.yaml，这个文件可以帮助我们在安装公共依赖的情况下，也将 packages 下的项目所需要的依赖也同时进行安装。
 在根目录创建 pnpm-workspace.yaml 文件，内容为：
 
-作者：田同学2001
-链接：https://juejin.cn/post/7077168840806760478
-来源：稀土掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。```
+```
+packages:
+  - 'packages/*'
+```
 
 接下来再新建 `packages` 文件夹，来存放项目。进入 `packages` 目录，我直接初始化三个 `vue3 + ts` 的项目进行演示：
 
@@ -43,7 +44,7 @@ pnpm init -y
 npm init vite vue-demo1
 npm init vite vue-demo2
 npm init vite vue-demo3
-````
+```
 
 目前项目结构如下
 
@@ -199,7 +200,7 @@ pnpm run dev:vue-demo3
    npm i tyh-ui2
    ```
    完成安装，这样 `vue-demo1` 中就会单独多出一个依赖项进行使用了。
-2. `--filter` 安装  
+2. `--filter` 安装
    使用 `--filter` 修饰符可以实现在根目录指定某个目录进行安装，具体命令为：
    ```sh
    pnpm i tyh-ui2 --filter vue-demo1
@@ -217,3 +218,4 @@ pnpm i lodash -W
 ```
 
 这样就实现了在所有组件中都可以使用 lodash 了。
+````

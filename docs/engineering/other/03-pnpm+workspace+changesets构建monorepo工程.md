@@ -24,7 +24,7 @@ $ npm install -g pnpm
 
 ```ts
 // pkg1/src/index.ts
-import pkg2 from '@qftjs/monorepo2';
+import pkg2 from '@ailjc/monorepo2';
 
 function fun2() {
   pkg2();
@@ -186,7 +186,7 @@ packages:
   此时我们查看 pkg1 的 package.json，可以看到 `dependencies` 字段中多了对 `@ailjc/monorepo2` 的引用，以 `workspace:` 开头，后面跟着具体的版本号。
   ```json
   {
-    "name": "@qftjs/monorepo1",
+    "name": "@ailjc/monorepo1",
     "version": "1.0.0",
     "dependencies": {
       "@ailjc/monorepo2": "workspace:^1.0.0",
@@ -248,7 +248,7 @@ pnpm 推荐了两个开源的版本控制工具：
   "$schema": "https://unpkg.com/@changesets/config@2.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "linked": [["@qftjs/*"]],
+  "linked": [["@ailjc/*"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
@@ -278,7 +278,7 @@ pnpm 推荐了两个开源的版本控制工具：
 1. 编译阶段，生成构建产物
    ```json
    {
-     "build": "pnpm --filter=@qftjs/* run build"
+     "build": "pnpm --filter=@ailjc/* run build"
    }
    ```
 2. 清理构建产物和 `node_modules`
@@ -314,7 +314,7 @@ pnpm 推荐了两个开源的版本控制工具：
 
       ```json
       {
-        "name": "@qftjs/monorepo1",
+        "name": "@ailjc/monorepo1",
         "version": "1.0.2-beta.1"
       }
       ```

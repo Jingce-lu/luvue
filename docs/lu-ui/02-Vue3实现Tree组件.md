@@ -116,7 +116,7 @@ export default {
         return <div>无任何节点</div>;
       }
       // 渲染子节点
-      return data.map((item) => <zf-tree-node data={item}></zf-tree-node>);
+      return data.map((item) => <ai-tree-node data={item}></ai-tree-node>);
     }
     return () => <div class='ai-tree'>{renderNode(data)}</div>;
   },
@@ -140,7 +140,7 @@ export default {
           <div class='ai-tree-list'>
             {data.children &&
               data.children.map((child) => (
-                <zf-tree-node data={child}></zf-tree-node>
+                <ai-tree-node data={child}></ai-tree-node>
               ))}
           </div>
         </div>
@@ -158,10 +158,10 @@ export default {
 
 @include blockquote(tree) {
   position: relative;
-  .zf-tree-label {
+  .ai-tree-label {
     padding-left: 24px;
   }
-  .zf-tree-list {
+  .ai-tree-list {
     padding-left: 34px;
   }
 }
@@ -188,10 +188,10 @@ const classes = computed(() => [
 ```scss
 @include blockquote(tree) {
   position: relative;
-  .zf-tree-node {
+  .ai-tree-node {
     user-select: none;
-    &.zf-tree-no-expand {
-      .zf-icon {
+    &.ai-tree-no-expand {
+      .ai-icon {
         visibility: hidden;
       }
     }
@@ -207,8 +207,8 @@ const methods = {
    		data.expand = !data.expand;
     }
 }
-<div class="zf-tree-label" onClick={methods.handleExpand}>
-    <zf-icon icon="right"></zf-icon>
+<div class="ai-tree-label" onClick={methods.handleExpand}>
+    <ai-icon icon="right"></ai-icon>
     <span>{data.name}</span>
 </div>
 ```
@@ -226,13 +226,13 @@ const methods = {
     }
 }
 <div class={classes.value}>
-    <div class="zf-tree-label" onClick={methods.handleExpand}>
-        <zf-icon icon="right"></zf-icon>
+    <div class="ai-tree-label" onClick={methods.handleExpand}>
+        <ai-icon icon="right"></ai-icon>
         <input type="checkbox" checked={data.checked} onClick={withModifiers(methods.handleChange, ['stop'])} />
         <span>{data.name}</span>
     </div>
-    <div class="zf-tree-list" vShow={data.expand}>
-        {data.children && data.children.map(child => <zf-tree-node data={child}></zf-tree-node>)}
+    <div class="ai-tree-list" vShow={data.expand}>
+        {data.children && data.children.map(child => <ai-tree-node data={child}></ai-tree-node>)}
     </div>
 </div>
 ```
@@ -280,7 +280,7 @@ instance.ctx.getCheckNodes = getCheckNodes;
 ### 3.通过 ref 进行获取
 
 ```
-<zf-tree :data="treeData" ref="tree"></zf-tree>
+<ai-tree :data="treeData" ref="tree"></ai-tree>
 export default {
   setup() {
 
@@ -349,7 +349,7 @@ const methods = {
 ### 1.传递异步方法
 
 ```
-<zf-tree :data="treeData" ref="tree" :load="loadFn"></zf-tree>
+<ai-tree :data="treeData" ref="tree" :load="loadFn"></ai-tree>
 function loadFn(data, cb) {
     if (data.id == 1) {
     setTimeout(() => {
@@ -437,11 +437,11 @@ watch(data, () => {
 ## 七.定制化节点插槽实现
 
 ```html
-<zf-tree :data="treeData" ref="tree" :load="loadFn">
+<ai-tree :data="treeData" ref="tree" :load="loadFn">
   <template v-slot="{name}">
     <b>{{name}}</b>
   </template>
-</zf-tree>
+</ai-tree>
 ```
 
 ```js
@@ -492,8 +492,8 @@ const dragEvent = {
 > 根据 `draggable` 属性决定是否添加拖拽事件
 
 ```scss
-.zf-tree-node {
-  &.zf-tree-draggable {
+.ai-tree-node {
+  &.ai-tree-draggable {
     user-select: none;
     -webkit-user-drag: element;
   }
@@ -506,14 +506,14 @@ const dragEvent = {
 
 ```html
 <div
-  class="zf-tree-indicator"
+  class="ai-tree-indicator"
   ref="indicator"
   vShow="{state.showDropIndicator}"
 ></div>
 ```
 
 ```scss
-.zf-tree-indicator {
+.ai-tree-indicator {
   position: absolute;
   height: 1px;
   right: 0;
@@ -557,7 +557,7 @@ treeNodeDragOver(e,nodeInstance, data) {
     }else{
         state.dropPosition = 0;
     }
-    let iconPosition = overEl.querySelector('.zf-icon').getBoundingClientRect();
+    let iconPosition = overEl.querySelector('.ai-icon').getBoundingClientRect();
     let indicatorTop = -9999;
     if(state.dropPosition == 1){
         indicatorTop = iconPosition.top - treePosition.top; // 获取线相对于树的位置

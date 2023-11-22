@@ -44,24 +44,24 @@ class zfButton extends HTMLElement {
   constructor() {
     super();
     // 创建影子
-    let shadow = this.attachShadow({ mode: "open" });
-    let btn = document.getElementById("btn");
+    let shadow = this.attachShadow({ mode: 'open' });
+    let btn = document.getElementById('btn');
     // 拷贝模板
     let cloneTemplate = btn.content.cloneNode(true);
-    const style = document.createElement("style");
+    const style = document.createElement('style');
     const types = {
       primary: {
-        backgroundColor: "#409eff",
-        color: "#fff"
+        backgroundColor: '#409eff',
+        color: '#fff',
       },
       default: {
-        backgroundColor: "#c8c9cc",
-        color: "#fff"
-      }
+        backgroundColor: '#c8c9cc',
+        color: '#fff',
+      },
     };
-    const btnType = this.getAttribute("type") || "default";
+    const btnType = this.getAttribute('type') || 'default';
     style.innerHTML = `
-            .zf-btn {
+            .ai-btn {
                 outline:none;
                 border:none;
                 border-radius:4px;
@@ -81,7 +81,7 @@ class zfButton extends HTMLElement {
 ### customElement
 
 ```js
-window.customElements.define("lu-button", luButton);
+window.customElements.define('lu-button', luButton);
 ```
 
 > 定义自定义组件
@@ -132,10 +132,10 @@ window.customElements.define("lu-button", luButton);
   class LuCollapse extends HTMLElement {
     constructor() {
       super();
-      const shadow = this.attachShadow({ mode: "open" });
-      const tmpl = document.getElementById("collapse_tpl");
+      const shadow = this.attachShadow({ mode: 'open' });
+      const tmpl = document.getElementById('collapse_tpl');
       let cloneTemplate = tmpl.content.cloneNode(true);
-      const style = document.createElement("style");
+      const style = document.createElement('style');
       style.innerHTML = `
               :host{
                   display:flex;
@@ -144,7 +144,7 @@ window.customElements.define("lu-button", luButton);
                   padding:20px 15px;
                   border-radius:5px;
               }
-              .zf-collapse{
+              .ai-collapse{
                   width:100%;
               }
               .title{
@@ -155,27 +155,27 @@ window.customElements.define("lu-button", luButton);
       shadow.appendChild(cloneTemplate);
 
       // 获取插槽
-      const slot = shadow.querySelector("slot");
+      const slot = shadow.querySelector('slot');
       // 拿到插槽中所有内容
-      slot.addEventListener("slotchange", e => {
+      slot.addEventListener('slotchange', (e) => {
         this.slotList = e.target.assignedElements(); // 获取插槽中的内容
         this.render();
       });
     }
     static get observedAttributes() {
-      return ["active"];
+      return ['active'];
     }
     attributeChangedCallback(name, oldVal, newVal) {
       // 获取属性列表
-      if (name === "active") {
+      if (name === 'active') {
         this.activeList = newVal;
         this.render();
       }
     }
     render() {
       if (this.slotList && this.activeList) {
-        [...this.slotList].forEach(child => {
-          child.setAttribute("active", this.activeList);
+        [...this.slotList].forEach((child) => {
+          child.setAttribute('active', this.activeList);
         });
       }
     }
@@ -189,10 +189,10 @@ window.customElements.define("lu-button", luButton);
   class LuCollapseItem extends HTMLElement {
     constructor() {
       super();
-      const shadow = this.attachShadow({ mode: "open" });
-      const tmpl = document.getElementById("collapse_item_tpl");
+      const shadow = this.attachShadow({ mode: 'open' });
+      const tmpl = document.getElementById('collapse_item_tpl');
       let cloneTemplate = tmpl.content.cloneNode(true);
-      const style = document.createElement("style");
+      const style = document.createElement('style');
 
       style.innerHTML = `
               :host{
@@ -216,42 +216,42 @@ window.customElements.define("lu-button", luButton);
       shadow.appendChild(style);
       shadow.appendChild(cloneTemplate);
 
-      this.header = this.shadowRoot.querySelector(".title");
+      this.header = this.shadowRoot.querySelector('.title');
 
       this.show = true;
-      this.header.addEventListener("click", () => {
-        let nameVal = this.getAttribute("name");
+      this.header.addEventListener('click', () => {
+        let nameVal = this.getAttribute('name');
         this.show = !this.show;
-        document.querySelector("lu-collapse").dispatchEvent(
-          new CustomEvent("change", {
+        document.querySelector('lu-collapse').dispatchEvent(
+          new CustomEvent('change', {
             detail: {
               name: nameVal,
-              show: this.show
-            }
+              show: this.show,
+            },
           })
         );
       });
     }
     static get observedAttributes() {
-      return ["active", "name", "title"];
+      return ['active', 'name', 'title'];
     }
     attributeChangedCallback(name, oldVal, newVal) {
       switch (name) {
-        case "active":
+        case 'active':
           this.active = JSON.parse(newVal);
           break;
-        case "name":
+        case 'name':
           this.name = newVal;
           break;
-        case "title":
+        case 'title':
           this.header.innerHTML = newVal;
           break;
       }
       if (this.active && this.name) {
         let isShow = this.active.includes(this.name);
-        this.shadowRoot.querySelector(".content").style.display = isShow
-          ? "block"
-          : "none";
+        this.shadowRoot.querySelector('.content').style.display = isShow
+          ? 'block'
+          : 'none';
         this.show = isShow;
       }
     }
@@ -263,21 +263,21 @@ window.customElements.define("lu-button", luButton);
 - 引用组件
 
   ```js
-  import ZfCollapse from "./zf-collapse";
-  import ZfCollapseItem from "./zf-collapse-item";
+  import ZfCollapse from './ai-collapse';
+  import ZfCollapseItem from './ai-collapse-item';
 
-  let currentActive = ["1", "2", "3"];
+  let currentActive = ['1', '2', '3'];
 
   // 定制组件
-  customElements.define("zf-collapse", ZfCollapse);
-  customElements.define("zf-collapse-item", ZfCollapseItem);
+  customElements.define('ai-collapse', ZfCollapse);
+  customElements.define('ai-collapse-item', ZfCollapseItem);
 
   // 设置数据
   document
-    .querySelector("zf-collapse")
-    .setAttribute("active", JSON.stringify(currentActive));
+    .querySelector('ai-collapse')
+    .setAttribute('active', JSON.stringify(currentActive));
 
-  document.querySelector("zf-collapse").addEventListener("change", e => {
+  document.querySelector('ai-collapse').addEventListener('change', (e) => {
     let { name, show } = e.detail;
     if (show) {
       currentActive.push(name);
@@ -286,8 +286,8 @@ window.customElements.define("lu-button", luButton);
       currentActive.splice(index, 1);
     }
     document
-      .querySelector("zf-collapse")
-      .setAttribute("active", JSON.stringify(currentActive));
+      .querySelector('ai-collapse')
+      .setAttribute('active', JSON.stringify(currentActive));
   });
   ```
 

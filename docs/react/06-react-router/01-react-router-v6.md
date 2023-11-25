@@ -649,7 +649,7 @@ function App() {
 
 ### RouteContext
 
-在这里，我们又需要引入一个新的 `Context` - `RouteContext`，它存储了两个属性：`outle`t 与 `matches`。
+在这里，我们又需要引入一个新的 `Context` - `RouteContext`，它存储了两个属性：`outlet` 与 `matches`。
 
 ```tsx
 /**

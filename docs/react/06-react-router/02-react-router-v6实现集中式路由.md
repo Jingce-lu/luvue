@@ -11,7 +11,7 @@
 
 ## 一、v6 的改变
 
-### 0、`<Route>`路径的变化
+### 0、`〈Route>`路径的变化
 
 - 占位符 `*` 和 `:id`可以用，正则不能用了
 - v6 中的所有路径匹配都将忽略 URL 上的尾部 "`/`"
@@ -22,7 +22,7 @@
 /detail/:id
 ```
 
-### 1、`<Switch>`重命名为`<Routes>`
+### 1、`〈Switch〉`重命名为`〈Routes〉`
 
 只是变了个名称
 
@@ -125,7 +125,7 @@ function UsersLayout() {
 }
 ```
 
-### 2、`<Route>`的 component 变成了 element
+### 2、`〈Route〉`的 component 变成了 element
 
 Route 的 `render` 或 `component` 改为 `element`
 
@@ -151,7 +151,7 @@ function Profile({ animate }) {
 - 可以向组件传 `props`，如上面的 `animate={true}`
 - 因为有了 `hook` 的出现，所以不必再通过 `renderProps` 向组件传递路由的一些 props，我们可以通过 `useParams`、`useLocation` 就可以拿到这些信息
 
-### 2.1 `<Route path>`
+### 2.1 `〈Route path〉`
 
 v6 简化了 path 的格式，只支持两种动态占位符：
 
@@ -180,7 +180,7 @@ path = '/tweets/:id(d+)'; // 有正则，不满足上面两种格式
 path = '/files/*/cat.jpg'; // 通配符不能放中间
 ```
 
-### 2.2 `<Route index>`
+### 2.2 `〈Route index〉`
 
 `index` 即表示是否是主路由，如果设置为 `true` 的话`不能有 children`，如下面的`<Route index element={<Home />} />`
 
@@ -219,7 +219,7 @@ function Basic() {
 
 <img :src="$withBase('/images/react/06-react-router/react-router-v6-092501.awebp')" alt="react/06-react-router/react-router-v6-092501.awebp">
 
-### 3、`<Outlet>`渲染子路由
+### 3、`〈Outlet〉`渲染子路由
 
 用来渲染子路由，我理解类似于 `props.children` 和 `react-router-config` 的 `renderRoutes`，或者 vue 的`<router-view>`
 
@@ -271,7 +271,7 @@ navigate('/index2', {replace: true})
 ...
 ```
 
-### 5、`<Redirect/>`没了，新增`<Navigate/>`替代
+### 5、`〈Redirect/〉`没了，新增`〈Navigate/〉`替代
 
 用法感觉没什么区别。。。
 
@@ -386,7 +386,7 @@ function App() {
 }
 ```
 
-### 3、父级组件中渲染子路由使用`<Outlet>`
+### 3、父级组件中渲染子路由使用`〈Outlet〉`
 
 ```jsx
 // 原v5
